@@ -1,0 +1,110 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+
+{% load static %}
+{% block content %}
+	
+	
+
+  
+
+<div class="container-fluid">
+  <h2>รายชื่อผู้ติดต่อ</h2>
+          
+  
+    
+<div class="table-responsive">
+<table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+      <th scope="col">รหัสสั่งซื้อ</th>
+      
+      <th scope="col">ชื่อผู้ทำรายการ</th>
+      <th scope="col">ยอดรวม</th>
+      <!-- <th scope="col">วันเวลา</th> -->
+      <th scope="col">สลิป</th>
+      <th scope="col">สถานะ</th>
+      <th scope="col">หมายเลขจัดส่ง.</th>
+      <th scope="col">พิมพ์ใบสั่งซื้อ</th>
+      </tr>
+    </thead>
+    <tbody>
+
+     {% for od in allorder %}
+     <td>{{ od.orderid  }}</td>
+        
+        <td>{{ od.name }}</td>
+        <td>{{ od.total|add:od.shipcost|intcomma }}</td>
+        <!-- <td>{{ od.stemp }}</td> -->
+        <td> 
+          {% if od.slip %}
+           <a href="{{od.slip.url}}" class="btn btn-info"><i class="fas fa-search-plus"></i></a>
+          {% else %}
+          <i class="fas fa-times"style="font-size:24px;color:red"></i>
+          {% endif %}
+        </td>
+        <td>
+
+      {% if od.paid and od.slip %}
+       <a href="{% url 'updatestatus' od.orderid 'cancel' %}"  class="btn btn-light"><i class="fas fa-check"style="color:green"></i></td></a>
+      {% elif od.paid == False and not od.slip %} 
+       <a  class="btn btn-light"><i class="fas fa-times"style="font-size:24px;color:red"></i></a> 
+      {% else %}
+      <a href="{% url 'updatestatus' od.orderid 'confirm' %}"  class="btn btn-light"><i class="far fa-plus-square"style="color:blue"> ยืนยัน</i></a> 
+
+      {% endif %}
+
+   {% if od.trackingnumber != None %}
+    <td>{{ od.trackingnumber }} <a href="{% url 'updatetracking' od.orderid %}"><i class="far fa-edit"style="color:blue"></i></a></td>
+    {% else %}
+    <td><a href="{% url 'updatetracking' od.orderid %}"><i class="far fa-edit"style="color:blue"></i></a></td>
+    {% endif %}
+    <td> <a href="{% url 'myorder-page' od.orderid %}"><i class="fas fa-print"></i> Print</a> </td>
+    </tr>
+
+      </tr>
+      {% endfor %} 
+  </tbody>
+</table>
+  
+
+
+
+
+</div>
+
+
+
+</div>  	
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if allorder.has_previous and allorder.has_next != True %}
+    
+     
+    <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:-1}}">{{allorder.number|add:-1}}</a></li>
+        <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true"> ... </a>
+        </li>
+
+    {% endif %}
+    {% if allorder.has_previous and allorder.has_next %}
+        <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:-1}}">{{allorder.number|add:-1}}</a></li>
+        <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+        <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{allorder.next_page_number}}"> Next</a></li> 
+    {% endif %}
+
+
+    {% if allorder.has_next and allorder.has_previous != True %}
+    <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+    <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+    <!-- <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:2}}">{{allorder.number|add:2}}</a></li> -->
+    <li class="page-item"><a class="page-link" href="?page={{allorder.next_page_number}}"> Next</a></li> 
+    {% endif %}
+    
+  </ul>
+</nav>
+{% endblock content %}

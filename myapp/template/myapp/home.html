@@ -1,0 +1,167 @@
+{% extends 'myapp/base.html' %}
+
+{% load static %}
+
+
+  
+  {% block content %}
+     
+  
+
+
+<!--Carousel Wrapper-->
+<div id="video-carousel-example2" class="carousel slide carousel-fade" data-ride="carousel">
+  <!--Indicators-->
+  <ol class="carousel-indicators">
+    <li data-target="#video-carousel-example2" data-slide-to="0" class="active"></li>
+    <li data-target="#video-carousel-example2" data-slide-to="1"></li>
+    
+  </ol>
+  <!--/.Indicators-->
+  <!--Slides-->
+  <div class="carousel-inner" role="listbox">
+    <!-- First slide -->
+    <div class="carousel-item active" data-interval="4000">
+      <!--Mask color-->
+      <div class="view">
+        <!--Video source-->
+        <video class="video-fluid" autoplay loop muted>
+          <source src="{% static 'myapp/images/video/test.mp4' %}" type="video/mp4">
+        </video>
+        <div class="mask rgba-indigo-light"></div>
+      </div>
+
+      
+    </div>
+    <!-- /.First slide -->
+
+    <!-- Second slide -->
+    <div class="carousel-item">
+      <!--Mask color-->
+      <div class="view">
+        <!--Video source-->
+        <video class="video-fluid"width="auto" height="1000" autoplay loop muted>
+          <source src="{% static 'myapp/images/video/test2.mp4' %}" type="video/mp4">
+        </video>
+        <div class="mask rgba-purple-slight"></div>
+      </div>
+
+     
+    </div>
+    <!-- /.Second slide -->
+
+   
+    
+  </div>
+  <!--/.Slides-->
+  <!--Controls-->
+  <a class="carousel-control-prev" href="#video-carousel-example2" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#video-carousel-example2" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  <!--/.Controls-->
+</div>
+<!--Carousel Wrapper-->
+
+
+
+<div class="jumbotron text-center">
+    <h1>บริษัท แอมเน็ต ไอที โซลูชั่น แอนด์ เอ็นจิเนียริ่ง จำกัด</h1>      
+    <p>ยินดีให้บริการด้านงาน IT Outsources หลากหลายประเภท มีประสบการณ์มานานกว่า 10 ปี เราเข้าใจถึงความต้องการของลูกค้า เรามีหน้าที่จัดการงานด้าน IT ภายในองค์กรแบบมืออาชีพ</p>
+  </div>
+     
+
+
+
+
+
+
+
+
+<div class="container" >
+    
+    <h4>สินค้าล่าสุด(แนะนำ)</h4>
+  
+
+   
+      <div class="row " >
+        
+    {% for pd in product %}
+      <div class="col-sm-6 col-md-4 col-lg-3 mt-4"  >
+      
+
+        <div class="card" >
+
+          {% if pd.image %}
+          <img src="{{ pd.image.url }}" class="card-img-top" >
+          
+          {% endif %}
+          <div class="card-body">
+            <p class="card-title" style="font-size: 15px"> <strong> {{ pd.name|truncatechars:25 }}</strong>  </p>
+             <p class="card-title" style="font-size: 15px">  {{ pd.namedetail|truncatechars:20 }} </p>
+            <p style="color:#e06f1f;font-size: 20px" >  ฿ {{ pd.price }} </p>
+            <!-- <p>{{ pd.detail }}</p>
+            <p>จำนวนสินค้า {{ pd.quantity }}  {{ pd.unit }}</p> -->
+            <!-- {% if pd.quantity <= 0 %}
+            <p style="color: red;">สินค้าอาจจะหมด สอบถามแอดมิน</p>
+            {% else %}
+            
+            {% endif %} 
+             -->
+             
+             <a href="{% url 'detail-page' pd.id %}" ></i> รายละเอียด >></a> 
+            {% if pd.quantity > 0 and pd.instock == True %}
+               <a href="{% url 'addtocart-page' pd.id  %}" class="btn btn-outline-dark btn-block "style="text-align: center;"><i class="fas fa-cart-plus"></i> เพิ่มลงตะกร้า</a>
+              {% else %}
+                 <a type="button" class="btn btn-light btn-block disabled" style="color: red;"><i class="fas fa-times"></i> สินค้าหมด</a>
+
+                
+              {% endif %}
+
+
+
+            
+
+              
+
+            
+
+            {% if user.is_authenticated and user.profile.usertype == 'admin' %}
+            <a href="{% url 'editproduct-page' pd.id %}" class="btn btn-outline-dark btn-block "style="text-align: center;"> แก้ไขสินค้า</a>
+            {% endif %}
+          
+        </div>
+        
+       </div>
+    <br>
+
+      </div>
+
+
+    {% endfor %}
+
+      </div>
+
+
+
+
+  </div>
+    
+
+
+   
+
+
+
+  
+
+ {% endblock content %}
+  <!-- end for nav -->
+
+  
+
+

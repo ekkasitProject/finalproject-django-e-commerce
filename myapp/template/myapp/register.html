@@ -1,0 +1,62 @@
+{% extends 'myapp/base.html' %}
+
+
+
+{% block content %}
+
+
+    <div class="container"> <div class=" text-center mt-5 ">
+      <h1>สมัครผู้แทนจำหน่าย</h1>
+  </div>
+  <div class="row ">
+      <div class="col-lg-7 mx-auto">
+          <div class="card mt-2 mx-auto p-4 bg-light">
+              <div class="card-body bg-light">
+                  <div class="container">
+                      <form method="POST" enctype="multipart/form-data" id="contact-form" role="form" >
+                        {% csrf_token %}
+                          <div class="controls">
+                              
+                              <div class="row">
+                                
+
+                                  <div class="col-md-6">
+                                      <div class="form-group"> <label for="first_name">Firstname</label> 
+                                        <input type="text"id="first_name" name="first_name" class="form-control" placeholder="Firstname" required  >  </div>
+                                  </div>
+                                   
+                                  <div class="col-md-6">
+                                      <div class="form-group"> <label for="last_name">Lastname</label> 
+                                        <input  type="text" id="last_name" name="last_name" class="form-control" placeholder="Lastname"  required  >  </div>
+                                  </div>
+                              </div>
+                              
+
+                
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="form-group"> <label for="email">Email</label> 
+                                        <input   type="email" id="email" name="email" class="form-control" placeholder="Email address"required  >  </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                      <div class="form-group"> <label for="password">Password</label> 
+                                        <input  type="password" id="password" name="password" class="form-control" placeholder="Password" required  >  </div>
+                                  </div>
+
+                                  <div class="col-md-12"> 
+                                    
+                                    <button type="submit" class="btn btn-success  pt-2 btn-block">Submit</button>
+                              </div>
+                          </div>
+                          
+                      </form>
+                  </div>
+              </div>
+          </div> <!-- /.8 -->
+      </div> <!-- /.row-->
+  </div>
+</div>
+
+{% endblock content %}
+

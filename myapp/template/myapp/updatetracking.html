@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+
+
+
+{% block content %}
+
+
+<div class="container" style="margin-bottom: 50px">
+  <h2>อัพเดทเลขพัสดุ</h2>
+  <p>ORDER ID : {{orderid}} </p>
+  <form method="POST">
+  	{% csrf_token %}
+  	<!-- บังคับใส่ ของ django -->
+    <div class="form-group">
+      <label for="nametracking">ผู้ให้บริการขนส่งสินค้า</label>
+      <input type="text" class="form-control" id="nametracking" name="nametracking">
+    </div>
+
+    <div class="form-group">
+      <label for="trackingnumber">เลขพัสดุ / EMS</label>
+      <input type="text" class="form-control" id="trackingnumber" name="trackingnumber">
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+</div>
+
+{% endblock content %}

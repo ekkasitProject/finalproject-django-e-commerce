@@ -1,0 +1,286 @@
+{% load static %}
+{% load humanize %}
+{% load custom_tags %}
+<!doctype html>
+<html lang="en">
+  <head> 
+    <title>Amnet it solution & engineering</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'myapp/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'myapp/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'myapp/images/favicon-16x16.png' %}">
+    <link rel="manifest" href=" {% static 'myapp/images/site.webmanifest' %} ">
+    <link rel="mask-icon" href="{% static 'myapp/images/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <link rel="shortcut icon" href="{% static 'myapp/images/favicon.ico' %}">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="{% static 'myapp/images/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/style.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  
+
+
+    {% block header %}
+
+    {% endblock header %}
+
+
+
+  </head>
+  <body>
+
+
+<nav class="navbar fixed navbar-expand-sm navbar-light  bg-white">
+  <a class="navbar-brand" href="{% url 'home-page' %}">
+    <img src="{% static 'myapp/images/logo.png' %}" width="100px">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav ml-auto">
+
+                   <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home-page' %}">HOME</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="">ABOUTS</a>
+                  </li>
+                  <li class="nav-item">
+                   <a class="nav-link" href="{% url 'contact-page' %}">CONTACTS</a>
+                  </li>
+                  
+                  <li class="nav-item">                                                    <!-- tags -->  
+                     <a  class="nav-link" href="{% url 'allproduct-page' %}">PRODUCTS ({% show_allproduct %})</a>
+                  </li>
+
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Product Type</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                      <!-- tags -->  
+                      <h5 class="dropdown-header"> <strong>NETWORK</strong></h5>
+                      <a class="dropdown-item" href="#">{% all_category %} </a>
+                      <h5 class="dropdown-header"> <strong>ORTHER</strong></h5>
+                      
+                    </div>
+                  </li>
+
+                  <!-- ค้นหา -->
+                  <div class="col-sm-3 col-md-3 pull-right">
+                    <form class="fom-inline ml-3" action="{% url 'search-page' %}" method="GET" role="search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search products..." name="name">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"style="color: Mediumslateblue;"><i class="fas fa-search" ></i></button>
+                            </div>
+                        </div>
+                    </form>
+                  </div>       
+
+
+          
+                  {% if user.is_authenticated and user.profile.usertype == 'member' %}
+                        <a class="nav-link" href="{% url 'mycart-page' %}">
+                          <i class="fas fa-shopping-bag fa-lg"></i>
+                          <span class="badge badge-danger ">{{ user.profile.cartquan }}</span></i>
+                            
+                          </i>
+                         
+                        </a>
+                      {% endif %}
+                  
+
+                   
+
+
+                  
+
+                </ul>
+                <ul class="navbar-nav ml-auto ">
+                  {% if user.is_authenticated %}
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" >
+                      
+                      <img src="{{ user.profile.photo.url }}" width="45" height="50"  class="rounded-circle">&nbsp ยินดีต้อนรับ
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01" >
+                      <a class="dropdown-item "><i class="fas fa-user"></i> {{user.first_name}}  {{user.last_name}}</a>
+
+                      <!-- ส่วน admin -->
+                      {% if user.is_authenticated and user.profile.usertype == 'admin' %}
+                      <a class="dropdown-item" href="{% url 'graph-page' %}"><i class="fas fa-chart-pie"></i> แดชบอร์ด</a>
+                        <a class="dropdown-item" href="{% url 'addproduct-page' %}"><i class="fab fa-product-hunt"></i> เพิ่มสินค้า</a>
+                        <a class="dropdown-item" href="{% url 'allorderlist-page' %}"><i class="fa fa-list-alt" ></i> รายการสั่งซื้อทั้งหมด</a>
+                        <a class="dropdown-item" href="{% url 'allcontact-page' %}"><i class="fas fa-list"></i> รายชื่อผู้ติดต่อ</a>
+                      {% endif %}
+
+
+
+                      <!-- ส่วน member  -->
+
+                      {% if user.is_authenticated and user.profile.usertype == 'member' %}
+                      <a class="dropdown-item" href="{% url 'editprofile-page' user.username %}"><i class="fas fa-id-card"></i> แก้ไขประวัติส่วนตัว</a>
+                        <a class="dropdown-item" href="{% url 'orderlist-page' %}"><i class="far fa-address-book"></i> รายการสั่งซื้อ</a>
+                      {% endif %}
+
+
+
+                      <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a>
+                    </div>
+                  </li>
+
+                 {% else %}
+                  <li class="nav-item">
+                   <a  class="nav-link " href="{% url 'register-page' %}"><i class="fas fa-user-plus"></i> สมัครผู้แทนจำหน่าย</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link " href="{% url 'login' %}"><i class="far fa-user"></i>  เข้าสู่ระบบ</a>
+                     
+                  </li>
+                   {% endif %}
+                </ul>
+                             
+  </div>  
+    
+</nav>
+
+
+
+
+
+  
+   
+      {% block content %}
+
+
+
+    {% endblock content %}
+
+
+
+
+
+    <body class="d-flex flex-column min-vh-100" >
+    <div class="wrapper flex-grow-1"></div>
+<!-- Footer -->
+<footer class="bg-light  text-lg-start">
+  <!-- Grid container -->
+  <div class="container p-4">
+    <!--Grid row-->
+    <div class="row">
+      <!--Grid column-->
+      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+        <h5 class="text-uppercase"> Amnet it solution & engineering</h5><br>
+
+        <p>
+         <i class="fas fa-map-marker fa-lg"></i> ที่อยู่: 900 68 หมู่9 ตำบล บ้านเกาะ อำเภอเมือง  จังหวัดนครราชสีมา 30000
+        </p>
+        <p>
+         <i class="fas fa-phone-alt fa-lg"></i> 081-926-5405
+        </p>
+        <a href=""> <i class="fab fa-facebook fa-2x" ></i></a>
+        <a href=""> <i class="fab fa-line fa-2x"></i></a>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase">PAGE</h5><br>
+
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="#!" class="text-dark">HOME</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">ABOUTS</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">CONTACT</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">PRODUCTS</a>
+          </li>
+        </ul>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase mb-0">MAP</h5> <br>
+
+        <ul class="list-unstyled" >
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3853.647518811643!2d102.13842721479423!3d15.012259389541358!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31194b3e96168a45%3A0x83deee0af3eb4d6b!2sAmnet%20it%20solution%20%26%20Engineering.co.th!5e0!3m2!1sen!2sth!4v1585137555595!5m2!1sen!2sth" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </ul>
+      </div>
+      <!--Grid column-->
+    </div>
+    <!--Grid row-->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2020 Copyright:
+    <a class="text-dark" href="https://mdbootstrap.com/">Amnet it solution & engineering ALL Right Reserved.</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+ 
+</body>
+
+<!-- 
+    {% hello_tag %} -->
+
+
+
+
+ <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="{% static 'myapp/js/myjs.js' %}"></script>
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+
+  </body>
+
+</html>
+ 
+
+
+
+
+
+
+   
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

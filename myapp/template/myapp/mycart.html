@@ -1,0 +1,88 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+	
+	
+
+<div class="container">
+  <h2>ตะกร้าสินค้าของฉัน</h2>
+  <p>รายละเอียดสินค้า</p>            
+  
+  {% if status == 'delete' %}
+     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>ลบสินค้าเรียบร้อยแล้ว!</strong> คุณสามารถเลือกดูสินค้าอื่น ๆ ได้เลย
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+	
+<div class="row">
+  <div class="col-sm-8">
+<table class="table table-striped  table-hover ">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">สินค้า</th>
+      <th scope="col">ราคา</th>
+      <th scope="col">จำนวน</th>
+      <th scope="col">รวมยอด</th>
+      <th scope="col">ลบ</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  	 {% for pd in mycart %}
+    <tr>
+      <td>{{ pd.productsname|truncatechars:15 }}</td>
+      <td>{{ pd.price|intcomma }}</td>
+      <td>{{ pd.quantity|intcomma }}</td>
+      <td>{{ pd.total|intcomma }}</td>
+
+
+
+
+        <th> 
+		<form method="POST" id="form{{pd.productsid}}" onsubmit="return confirm('คุณต้องการลบสินค้าใช่ไหม?')">
+		  	{% csrf_token %}
+		  	<input type="hidden" name="productsid" value="{{pd.productsid}}">
+    		<button type="submit" form="form{{pd.productsid}}" class="btn btn-danger">ลบ</button> 
+    	</form>
+    	</th>
+
+
+
+
+    </tr>
+    {% endfor %}    
+  </tbody>
+</table>
+ <div style="text-align: center; margin: 15px;">
+   <a href="{%url 'mycartedit-page' %}" class="btn btn-primary ">แก้ไขจำนวนสินค้า</a>
+ </div> 
+</div>
+
+
+
+<div class="col-sm-4">
+    <div class="card" >
+      <div class="card-header">
+       <h4> สรุปรายการสั่งซื้อ </h4>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">จำนวน {{count|intcomma}} ชิ้น</li>
+        <li class="list-group-item"> <h5> จำนวนเงินทั้งหมด  ฿ {{total|intcomma}} </h5></li>
+      </ul>
+       
+    </div>
+    <br>
+    <a href="{% url 'checkout-page' %}" class="btn btn-success btn-block">ดำเนินการชำระเงิน</a>
+</div>
+
+</div>
+  
+
+
+</div>
+{% endblock content %}

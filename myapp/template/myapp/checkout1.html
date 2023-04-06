@@ -1,0 +1,84 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+    <div class="container"> <div class=" text-center mt-5 ">
+      <h1>กรุณากรอกข้อมูลจัดส่งสินค้า</h1>
+  </div>
+  <div class="row ">
+      <div class="col-lg-7 mx-auto">
+          <div class="card mt-2 mx-auto p-4 bg-light">
+              <div class="card-body bg-light">
+                  <div class="container">
+                      <form method="POST" id="contact-form" role="form" >
+                        {% csrf_token %}
+                          <div class="controls">
+                              <div class="row">
+                                {% if user.is_authenticated %}
+
+                                  <div class="col-md-12">
+                                      <div class="form-group"> <label for="name">ชื่อ-สกุล / ชื่อบริษัท *</label> 
+                                        <input id="name" type="text" name="name" class="form-control" value=" {{user.first_name}}  {{user.last_name}}"  required  >  </div>
+                                  </div>
+                                   {% endif %}
+                                  <div class="col-md-12">
+                                    <div class="form-group"> <label for="tel">เบอร์โทรศัพท์ *</label> 
+                                      <input id="tel" type="text" name="tel" class="form-control" placeholder="กรุณากรอกข้อมูลเบอร์โทรศัพท์ *" required="required" data-error="Valid email is required."> </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                              <div class="col-md-12 form-group ">
+                                <label for="address">ที่อยู่จัดส่ง</label>
+                                <textarea class="form-control" rows="5" id="address" name="address" required
+                                placeholder="ตัวอย่าง: เลขที่ xx ถนน xx กทม. xxxx"></textarea>
+                              </div>
+                            </div>
+                              <div class="row">
+                                <div class="col-md-6 form-check">
+                                  <label class="form-check-label" for="ems">
+                                  <input type="radio" name="shipping" id="ems" value="ems"> ส่งแบบด่วนพิเศษ (50 บาท)
+                                  </label>
+                                </div>
+                                <div class="col-md-6 form-check">
+                                  <label class="form-check-label" for="register">
+                                  <input type="radio" name="shipping" id="register" value="register"> ส่งแบบธรรมดา (35 บาท)
+                                  </label>
+                                </div>
+                                  </div>
+                                  <br>
+                                  <div class="row">
+                                    <div class="col-md-6 form-check">
+                                      <label class="form-check-label" for="transfer">
+                                      <input type="radio" name="payment" id="transfer" value="transfer"> โอนเงินผ่านบัญชีธนาคาร
+                                      </label>
+                                    </div>
+                                    <!-- <div class="col-md-6 form-check">
+                                      <label class="form-check-label " for="cod">
+                                      <input type="radio" name="payment" id="cod" value="cod" disabled> เก็บเงินปลายทาง
+                                      </label>
+                                    </div> -->
+                                      </div>
+
+                
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="form-group"> <label for="other">หมายเหตุ </label> <textarea id="other" name="other" class="form-control" placeholder="กรุณากรอกข้อมูลจัดส่งสินค้า" rows="5" data-error="Please, leave us a message."></textarea> </div>
+                                  </div>
+                                  <div class="col-md-12"> 
+                                    <input type="submit"name="page" class="btn btn-success btn-send pt-2 btn-block " value="submit"> </div>
+                              </div>
+                          </div>
+                          
+                      </form>
+                  </div>
+              </div>
+          </div> <!-- /.8 -->
+      </div> <!-- /.row-->
+  </div>
+</div>
+    {% endblock content %}

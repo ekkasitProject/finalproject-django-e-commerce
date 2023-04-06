@@ -1,0 +1,84 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+
+{% load static %}
+{% block content %}
+	
+	
+
+<div class="container-fluid">
+  <h2>รายชื่อผู้ติดต่อ</h2>
+          
+  
+  	
+<div class="table-responsive">
+<table class="table table-striped ">
+  <thead class="thead-dark">
+    <tr>
+      
+      <th scope="col">ชื่อผู้ติดต่อ / ชื่อบริษัท</th>
+      <th scope="col">เบอร์โทรศัพท์</th>
+      <th scope="col">Email</th>
+      <th scope="col">รายละเอียด</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+
+  	 {% for ct in contact %}
+    <tr>
+      <td>{{ ct.name  }}</a></td>
+      <td>{{ ct.tel }}</td>
+      <td>{{ ct.email }}</td>
+      <td>{{ ct.detail }}</td>
+     <tr>
+
+
+    </td>
+    
+    <td>
+
+{% endfor %}
+  </tbody>
+</table>
+  
+
+
+
+
+</div>
+
+
+
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if allorder.has_previous and allorder.has_next != True %}
+    
+     
+    <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:-1}}">{{allorder.number|add:-1}}</a></li>
+        <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true"> ... </a>
+        </li>
+
+    {% endif %}
+    {% if allorder.has_previous and allorder.has_next %}
+        <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:-1}}">{{allorder.number|add:-1}}</a></li>
+        <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+        <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{allorder.next_page_number}}"> Next</a></li> 
+    {% endif %}
+
+
+    {% if allorder.has_next and allorder.has_previous != True %}
+    <li class="page-item active"><a class="page-link"  href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+    <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+    <!-- <li class="page-item "><a class="page-link"  href="?page={{allorder.number|add:2}}">{{allorder.number|add:2}}</a></li> -->
+    <li class="page-item"><a class="page-link" href="?page={{allorder.next_page_number}}"> Next</a></li> 
+    {% endif %}
+    
+  </ul>
+</nav>
+{% endblock content %}

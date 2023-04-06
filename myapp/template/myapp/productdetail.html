@@ -1,0 +1,96 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+	
+
+
+
+
+<div class="container ">
+  <div class="row">
+  	<nav aria-label="breadcrumb">
+                                                                                                                  
+  <ol class="breadcrumb breadcrumb-arrow">
+    <li><a href="{% url 'home-page' %}">Home</a></li>
+    <li><a href="{% url 'allproduct-page' %}">Products</a></li>
+    <li class="active"><span>{{product.name}}</span></li>
+  </ol>               
+</nav>
+    <div class="col-md-12"><h2> รายละเอียดสินค้า </h2></div>
+  </div>
+</div>
+<div class="container">
+  <div class="row" >
+    <div class="col-md-6 ">
+      <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+    </div>
+    <br>
+    <div class="col-md-6 col-md-4" style="margin: auto; ">
+      <div class="row">
+        <h3>{{product.name}}</h3>
+        
+      </div>
+       <div class="row">
+        
+        <h4>{{product.namedetail}}</h4>
+      </div>
+      <br>
+      <div class="row">
+        <h2 style="color:#e06f1f;"><i class="fa fa-inr" aria-hidden="true"></i>฿ {{product.price}}.00</h2>
+        &nbsp; &nbsp;
+        <!-- <h3><del>799</del></h3> -->
+        &nbsp; 
+        <!-- <h2 class="text-success">สินค้าขายดี</h2> -->
+      </div>
+      <br>
+    	
+      <div class="row">
+        <p><i class="text-success fa fa-check-square-o" aria-hidden="true"></i><strong>รายละเอียดสินค้า :&nbsp;</strong>   {{product.detail|linebreaks}} </p>
+        {% if product.quantity > 0 and product.instock == True %}
+        <p><i class="text-success fa fa-check-square-o" aria-hidden="true"></i> <strong>จำนวนสินค้าในสต๊อก : </strong> {{product.quantity}} {{product.unit}}</p>
+        {% endif %}
+      </div>
+      <br>
+      <div class="row mt-4">
+        <h3 class="text-info"><i class="fa fa-map-marker" aria-hidden="true"></i></h3>
+        <p style="font-size: 20px"> ที่อยู่: 900 68 หมู่9 ตำบล บ้านเกาะ อำเภอเมือง จังหวัดนครราชสีมา 30000  &nbsp; </p>
+      </div>
+      
+      <div class="row mt-4">
+      	<h4>สั่งซื้อ &nbsp; &nbsp; </h4>
+        {% if product.instock == True %}
+      	{% if user.is_authenticated  %}
+      	<a href="{% url 'addtocart-page' product.id %}" class="btn btn-outline-dark"><i class="fas fa-cart-plus"></i> เพิ่มลงตะกร้า</a> &nbsp; 
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-dark"><i class="fas fa-cart-plus"></i> เพิ่มลงตะกร้า</a> &nbsp;
+        {% endif %}
+
+         {% else %}
+               <a type="button" class="btn btn-light btn-block disabled" style="color: red;"><i class="fas fa-times"></i> สินค้าหมด</a>
+         {% endif %}
+         
+      </div>
+      
+      <div class="row mt-4">
+      	<h4>ผู้จำหน่าย: &nbsp; &nbsp;</h4>
+      	<p style="font-size: 18px">Amnet it solution & engineering. </p>
+      </div>
+      
+      
+    </div>
+    
+    </div>
+    <br>
+
+  
+<div class="row mt-4" ><h2> คู่มือสินค้า </h2></div>
+    <p> {{product.fulldetail|safe}}</p>
+    <a href="{% url 'allproduct-page' %}"style="margin-bottom: 20px;"class="btn btn-secondary btn-block">CLOSE</a>
+    
+    </div>
+    </div>
+
+
+{% endblock content %}
